@@ -1,0 +1,41 @@
+Dataset Guide
+AI-Based Mitral Valve Annuloplasty Suture Analysis
+This document describes the dataset folders submitted with the MEng research project. The dataset was prepared from mitral valve surgical videos and was used for suture entry/exit point detection, mitral annulus segmentation, and geometric analysis.
+1. Suture and Anatomy Folders contain Original Surgical Videos
+The Suture folder contains the original surgical video recordings used in the project. These videos capture mitral valve repair procedures and were the source from which individual image frames were extracted. The videos are retained as the original source data for the image datasets.
+2. Frames – Extracted Surgical Images
+The Frames folder contains individual images extracted from the surgical videos. The images are organised by surgical case, identified as V1 to V15. Each case represents a separate surgical recording or image collection used during the project.
+The extracted frames were used for manual annotation, object detection, annulus segmentation, model evaluation, prediction visualization, and post-processing.
+3. Entry and Exit Point Annotations
+The object detection annotations identify the visible suture entry and exit points in the surgical images. The annotations are stored as YOLO-format text files, with one label file corresponding to each annotated image. Each folder in frames from v1-v15 has the annotation files also. V16-v18 are extracted frames but annotation is not done on that.
+The two object detection classes are:
+•	0 – entry_point
+•	1 – exit_point
+These annotations were used to train the YOLO object detection models for automatic localization of suture landmarks.
+4. Mitral Annulus Annotations
+Mitral annulus annotations were created for the later surgical cases used for annulus analysis. The annulus was manually traced in CVAT to represent the visible anatomical boundary. The original CVAT annotation information may be present as XML/polyline annotations.
+These annotations were first used as a manual anatomical reference during geometric analysis and were later converted into YOLO segmentation labels for training the automatic annulus segmentation model.
+5. Combined Detection Dataset
+Images and entry/exit point labels from the individual surgical cases were combined to create the object detection dataset in entry_exit_detection folder. Case identifiers were added to filenames where necessary to prevent filename conflicts when data from different cases were merged.
+The prepared detection dataset contains separate image and label directories and, depending on the experiment, training, validation, and test subsets. A data.yaml file defines the dataset locations and the two detection classes.
+6. Stage II YOLOv8 Dataset
+An earlier combined dataset was prepared for the Stage II YOLOv8 experiments. This dataset contains the open-suture images and corresponding entry/exit point annotations used to train and validate the YOLOv8 landmark detector. The prepared dataset includes the YOLO image/label structure and its data.yaml configuration file. combinedold_dataset folder contains training and everything.
+7. Final Entry/Exit Detection Dataset
+The final detection dataset was prepared for the later YOLO26 entry and exit point detection experiments. It contains the surgical images and matching YOLO labels organised into the subsets used for model development and independent evaluation.
+This dataset is the main source used by the final object detection model to learn the locations of suture entry and exit points.
+8. Annulus Segmentation Dataset
+A separate dataset was prepared for mitral annulus segmentation because annulus localization is a different task from detecting discrete suture landmarks. The segmentation dataset contains surgical images and matching polygon-based YOLO segmentation labels representing the mitral annulus.
+The annulus segmentation data were prepared from cases with available annulus annotations. The final experimental setup uses development data for training/validation and maintains an independent surgical case for testing. V7-v15 contains annulus annotation.
+9. Intermediate / Corrected Dataset Folders
+Some folders may contain intermediate, converted, or corrected versions of the dataset generated while preparing the final YOLO detection and segmentation data. These folders document the dataset-processing workflow but should not be confused with the final prepared datasets used for model evaluation.
+10. Dataset File Types
+File Type	Purpose
+.mp4 / video files	Original surgical recordings
+.jpg / .png	Extracted surgical image frames
+.txt	YOLO object detection or segmentation labels
+.xml	CVAT annulus/polyline annotation information
+.yaml	YOLO dataset configuration
+11. YOLO training models
+•	C:\Users\ashud\Downloads\Mitral_valve_project\combined_dataset\combined_dataset\yolo_training\annulus_yolo26s_seg_80_20- Folder contains Yolo26 training for segmentation model.
+•	C:\Users\ashud\Downloads\Mitral_valve_project\combined_dataset\combined_dataset\yolo_training\suture_entry_exit_yolo26s_1024- Folder contain YOLO26 detection model
+
